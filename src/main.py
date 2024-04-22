@@ -3,6 +3,7 @@ import logging
 from common.setup_logging import setup_logging
 from stt.whisper import load_pipeline
 from download.dlp import list_formats, download_video
+from metadata.google_api import get_video_statistics
 
 
 logger = logging.getLogger(__name__)
@@ -16,7 +17,7 @@ def main():
     # logger.info(download_video(video_id))
     # pipeline = load_pipeline()
     # logger.info(pipeline('data/c8OwVTBdE6s.webm'))
-
+    # logger.info(get_video_statistics(video_id))
     logger.info("Program finished")
 
 
