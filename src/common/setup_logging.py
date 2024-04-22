@@ -9,8 +9,12 @@ from dotenv import find_dotenv, load_dotenv
 env_file = find_dotenv()
 load_dotenv()
 
-CONFIG_DIR = "../config"
-LOG_DIR = "../logs"
+BASE_DIR = ".."
+if __name__ == "__main__":
+    BASE_DIR += "/.."
+
+CONFIG_DIR = f"{BASE_DIR}/config"
+LOG_DIR = f"{BASE_DIR}/logs"
 
 
 def setup_logging():
@@ -27,3 +31,12 @@ def setup_logging():
         defaults={"logfilename": f"{LOG_DIR}/{timestamp}.log"},
     )
 
+
+def test():
+    setup_logging()
+    logger = logging.getLogger(__name__)
+    logger.info("Test!")
+
+
+if __name__ == "__main__":
+    test()
