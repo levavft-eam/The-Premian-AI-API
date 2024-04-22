@@ -7,4 +7,5 @@ transformers~=4.40.0
 google-api-python-client
 datasets~=2.19.0
 accelerate
-python-dotenv
+python-dotenv~=1.0.1
+yt-dlp[default]
