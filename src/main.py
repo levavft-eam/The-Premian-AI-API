@@ -6,7 +6,7 @@ from datetime import datetime
 
 from dotenv import find_dotenv, load_dotenv
 
-from STT.whisper import load_pipeline
+from stt.whisper import load_pipeline
 
 # find .env file in parent directory
 env_file = find_dotenv()
