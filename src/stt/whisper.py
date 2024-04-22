@@ -1,6 +1,6 @@
 import logging
 
-from src.common.initialize_torch import device, torch_dtype
+from src.common.setup_torch import device, torch_dtype
 from transformers import AutoModelForSpeechSeq2Seq, AutoProcessor, pipeline
 
 logger = logging.getLogger(__name__)
