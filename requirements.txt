@@ -1,0 +1,10 @@
+numpy
+torch~=2.2.2
+pillow
+torchvision
+pyav
+transformers~=4.40.0
+google-api-python-client
+datasets~=2.19.0
+accelerate
+python-dotenv
