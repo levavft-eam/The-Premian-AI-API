@@ -19,7 +19,7 @@ def download_video(video_id):
         # 'format': 'best[height<=720]',
         'format': 'bestaudio',
         'outtmpl': f'{BASE_DIR}/%(id)s.%(ext)s',
-        # 'download_archive': 'download_archive.txt',
+        'download_archive': 'download_archive.txt',
         'progress_hooks': [_yt_dlp_monitor]
         # 'postprocessors': [{
         #     'key': 'ExecAfterDownload',  # Execute a command after download

@@ -1,7 +1,7 @@
 import logging
 
 from common.setup_logging import setup_logging
-# from stt.whisper import load_pipeline
+from stt.whisper import load_pipeline
 from download.dlp import list_formats, download_video
 
 
@@ -13,9 +13,10 @@ def main():
     video_id = "c8OwVTBdE6s"
 
     logger.info("Program started")
+    # logger.info(download_video(video_id))
     # pipeline = load_pipeline()
-    # logger.info(list_formats(video_id))
-    logger.info(download_video(video_id))
+    # logger.info(pipeline('data/c8OwVTBdE6s.webm'))
+
     logger.info("Program finished")
 
 
