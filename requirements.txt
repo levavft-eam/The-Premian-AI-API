@@ -11,3 +11,4 @@ python-dotenv~=1.0.1
 yt-dlp[default]
 pandas~=2.2.2
 openai~=1.23.2
+flask
