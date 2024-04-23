@@ -45,11 +45,14 @@ def get_video_statistics(video_id):
 
     for item in required_items:
         result[item] = snippet[item]
+
+    video_categories = _get_video_categories()
+    result['category'] = video_categories[result['categoryId']]
     return result
 
 
 @cache  # we use this to save a bit on reruns of 'get_video_categories'.
-def get_video_categories():
+def _get_video_categories():
     api_service_name = "youtube"
     api_version = "v3"
     youtube = build(api_service_name, api_version, developerKey=GOOGLE_API_KEY)
@@ -66,6 +69,6 @@ def get_video_categories():
 
 def test():
     video_id = "c8OwVTBdE6s"
-    logger.info(pformat(get_video_categories()))
+    # logger.info(pformat(_get_video_categories()))
     logger.info(pformat(get_video_statistics(video_id)))
 
