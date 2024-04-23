@@ -21,11 +21,11 @@ def main():
     result = get_video_statistics(video_id)
     audio_file_path = download_video(video_id, False)
     pipeline = load_pipeline()
-    result['transcription'] = pipeline(audio_file_path, generate_kwargs={"language": "korean"})["text"]
+    result['transcript'] = pipeline(audio_file_path, generate_kwargs={"language": "korean"})["text"]
     result['AIReadyText'] = '\n\n'.join([result['channelTitle'],
                                          result['title'],
                                          result['description'],
-                                         result['transcription']])  # TODO: Improve this...
+                                         result['transcript']])  # TODO: Improve this...
     result['categories'] = {
         'youtubeCategory': result['category'],
         'GPTFree': get_text_category(result['AIReadyText'])
@@ -37,14 +37,14 @@ def main():
 def test():
     video_id = "c8OwVTBdE6s"
     result = get_video_statistics(video_id)
-    result['transcription'] = TEXT
+    result['transcript'] = TEXT
     result['AIReadyText'] = '\n\n'.join([result['channelTitle'],
                                          result['title'],
                                          result['description'],
-                                         result['transcription']])  # TODO: Improve this...
+                                         result['transcript']])  # TODO: Improve this...
     result['categories'] = {
         'youtubeCategory': result['category'],
-        'GPTFree': get_text_category(result['AIReadyText'])
+        'GPTFreeCategory': get_text_category(result['AIReadyText'])
     }
 
     logger.info(json.dumps(result, ensure_ascii=False))  # https://jsonviewer.stack.hu/
