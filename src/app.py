@@ -1,4 +1,4 @@
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request
 from flows import video_categorization, VIDEO_ID, TRANSCRIPT
 
 app = Flask(__name__)
@@ -13,6 +13,12 @@ app.config["JSONIFY_MIMETYPE"] = "application/json; charset=utf-8"
 @app.route('/test', methods=['GET'])
 def run_test():
     return jsonify(video_categorization(VIDEO_ID, transcript=TRANSCRIPT))
+
+
+@app.route('/categorize', methods=['GET'])
+def categorize():
+    video_id = request.args.get('v_id')
+    return jsonify(video_categorization(video_id, transcript=TRANSCRIPT))  # TODO: remove transcript=TRANSCRIPT
 
 
 if __name__ == '__main__':
