@@ -10,11 +10,14 @@ app.config["JSONIFY_MIMETYPE"] = "application/json; charset=utf-8"
 # https://github.com/bajcmartinez/flask-api-starter-kit/tree/master
 # https://auth0.com/blog/best-practices-for-flask-api-development/
 
+
+# http://127.0.0.1:5000/test
 @app.route('/test', methods=['GET'])
 def run_test():
     return jsonify(video_categorization(VIDEO_ID, transcript=TRANSCRIPT))
 
 
+# http://127.0.0.1:5000/categorize?v_id=<v_id>
 @app.route('/categorize', methods=['GET'])
 def categorize():
     video_id = request.args.get('v_id')
