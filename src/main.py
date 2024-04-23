@@ -1,6 +1,5 @@
 import logging
 from datetime import datetime
-from pprint import pformat
 import json
 
 from common.setup_logging import setup_logging
@@ -48,8 +47,7 @@ def test():
         'GPTFree': get_text_category(result['AIReadyText'])
     }
 
-    # logger.info(pformat(result))
-    logger.info(json.dumps(result, ensure_ascii=False))
+    logger.info(json.dumps(result, ensure_ascii=False))  # https://jsonviewer.stack.hu/
 
 
 if __name__ == "__main__":
