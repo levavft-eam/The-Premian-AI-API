@@ -32,8 +32,9 @@ def load_pipeline():
 
 
 def test():
+    logger.info("Starting whisper test")
     pipe = load_pipeline()
-    result = pipe(f"../../data/c8OwVTBdE6s.mp4_trimmed.mp3", generate_kwargs={"language": "korean"})
+    result = pipe(f"../../data/c8OwVTBdE6s.webm", generate_kwargs={"language": "korean"})
     logger.info(result["text"])
 
 
