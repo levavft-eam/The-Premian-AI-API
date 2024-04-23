@@ -1,6 +1,7 @@
 import os
 import logging
 from pprint import pformat
+from functools import cache
 from googleapiclient.discovery import build
 from dotenv import find_dotenv, load_dotenv
 
@@ -41,11 +42,13 @@ def get_video_statistics(video_id):
         'title',
         'thumbnails',
     )
+
     for item in required_items:
         result[item] = snippet[item]
     return result
 
 
+@cache  # we use this to save a bit on reruns of 'get_video_categories'.
 def get_video_categories():
     api_service_name = "youtube"
     api_version = "v3"
