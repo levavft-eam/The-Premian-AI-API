@@ -29,9 +29,6 @@ DEBUG = True
 
 
 def main():
-    logger.info("Program started")
-    now = datetime.now()
-
     video_id = "c8OwVTBdE6s"
     audio_file_path = download_video(video_id, False)
     if DEBUG:
@@ -45,9 +42,11 @@ def main():
     logger.info(statistics)
     # category = get_text_category(text)
     # logger.info(category)
-    logger.info(f"Program finished. Duration: {datetime.now() - now}")
 
 
 if __name__ == "__main__":
+    logger.info("Program started")
+    now = datetime.now()
     main()
+    logger.info(f"Program finished. Duration: {datetime.now() - now}")
 

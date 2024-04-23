@@ -1,4 +1,6 @@
 import os
+import logging
+from pprint import pformat
 from googleapiclient.discovery import build
 from dotenv import find_dotenv, load_dotenv
 
@@ -6,6 +8,7 @@ env_file = find_dotenv()
 load_dotenv()
 
 GOOGLE_API_KEY = os.environ["GOOGLE_API_KEY"]
+logger = logging.getLogger(__name__)
 
 
 def get_video_statistics(video_id):
@@ -16,7 +19,31 @@ def get_video_statistics(video_id):
         part="snippet,contentDetails,statistics",
         id=video_id
     )
-    return request.execute()
+
+    result = request.execute()
+
+    result = result['items'][0]
+    snippet = result['snippet']
+
+    result = {
+        'duration': result['contentDetails']['duration'],
+        'id': result['id'],
+        'statistics': result['statistics']
+    }
+
+    required_items = (
+        'categoryId',
+        'channelId',
+        'channelTitle',
+        'description',
+        'publishedAt',
+        'tags',
+        'title',
+        'thumbnails',
+    )
+    for item in required_items:
+        result[item] = snippet[item]
+    return result
 
 
 def get_video_categories():
@@ -28,4 +55,14 @@ def get_video_categories():
         hl="en_us",
         regionCode="KR"
     )
-    return request.execute()
+
+    result = request.execute()
+    result = {item['id']: item['snippet']['title'] for item in result['items']}
+    return result
+
+
+def test():
+    video_id = "c8OwVTBdE6s"
+    logger.info(pformat(get_video_categories()))
+    logger.info(pformat(get_video_statistics(video_id)))
+
