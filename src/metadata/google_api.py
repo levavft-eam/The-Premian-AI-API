@@ -8,14 +8,15 @@ from dotenv import find_dotenv, load_dotenv
 env_file = find_dotenv()
 load_dotenv()
 
-GOOGLE_API_KEY = os.environ["GOOGLE_API_KEY"]
 logger = logging.getLogger(__name__)
+
+GOOGLE_API_KEY = os.environ["GOOGLE_API_KEY"]
+api_service_name = "youtube"
+api_version = "v3"
+youtube = build(api_service_name, api_version, developerKey=GOOGLE_API_KEY)
 
 
 def get_youtuber_statistics(youtuber_handle):
-    api_service_name = "youtube"
-    api_version = "v3"
-    youtube = build(api_service_name, api_version, developerKey=GOOGLE_API_KEY)
     request = youtube.channels().list(
         part="brandingSettings,contentDetails,contentOwnerDetails,id,localizations,snippet,statistics,status,"
              "topicDetails",
@@ -27,9 +28,6 @@ def get_youtuber_statistics(youtuber_handle):
 
 
 def get_video_statistics(video_id):
-    api_service_name = "youtube"
-    api_version = "v3"
-    youtube = build(api_service_name, api_version, developerKey=GOOGLE_API_KEY)
     request = youtube.videos().list(
         part="snippet,contentDetails,statistics",
         id=video_id
@@ -67,9 +65,6 @@ def get_video_statistics(video_id):
 
 @cache  # we use this to save a bit on reruns of 'get_video_categories'.
 def _get_video_categories():
-    api_service_name = "youtube"
-    api_version = "v3"
-    youtube = build(api_service_name, api_version, developerKey=GOOGLE_API_KEY)
     request = youtube.videoCategories().list(
         part="snippet",
         hl="en_us",
