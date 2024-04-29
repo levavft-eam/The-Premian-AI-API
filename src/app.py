@@ -11,18 +11,18 @@ app.config["JSONIFY_MIMETYPE"] = "application/json; charset=utf-8"
 # https://auth0.com/blog/best-practices-for-flask-api-development/
 
 
-# http://127.0.0.1:8000/test
+# .../test
 @app.route('/test', methods=['GET'])
 def run_test():
     return jsonify(video_categorization(VIDEO_ID, transcript=TRANSCRIPT))
 
 
-# http://127.0.0.1:8000/test
+# .../test
 @app.route('/fail', methods=['GET'])
 def fail():
     raise Exception("Failing on purpose")
 
-# http://127.0.0.1:8000/categorize?v_id=<v_id>
+# .../categorize?v_id=<v_id>
 @app.route('/categorize', methods=['GET'])
 def categorize():
     video_id = request.args.get('v_id')
