@@ -1,11 +1,10 @@
-from flask import Flask, jsonify, request # type: ignore
-from werkzeug.middleware.proxy_fix import ProxyFix # type: ignore
+from flask import Flask, jsonify, request  # type: ignore
+from werkzeug.middleware.proxy_fix import ProxyFix  # type: ignore
 from src.flows import video_categorization, VIDEO_ID, TRANSCRIPT
 
 app = Flask(__name__)
 app.config["JSON_AS_ASCII"] = False
 app.config["JSONIFY_MIMETYPE"] = "application/json; charset=utf-8"
-
 
 app.wsgi_app = ProxyFix(
     app.wsgi_app, x_for=1, x_proto=0, x_host=0, x_prefix=0
@@ -23,6 +22,7 @@ def run_test():
 @app.route('/fail', methods=['GET'])
 def fail():
     raise Exception("Failing on purpose")
+
 
 # .../categorize?v_id=<v_id>
 @app.route('/categorize', methods=['GET'])
