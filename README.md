@@ -19,8 +19,9 @@ If you're installing this repository on a new server:
 10. Copy the '.env' file manually from a different installation, as it can't be commited to git (sensitive information). Make sure to put it directly inside The-Premian-AI-API.
 
 
-If you're running this repository:
+If you're running this repository in development (debug) mode:
 
 1. Activate the conda environment by running:
     conda activate the-premium-ai-api
-2. 
+2. Run in development (debug) mode with:
+    flask --app src/app.py run
