@@ -1,12 +1,12 @@
 import logging
-from datetime import datetime
 import json
+from datetime import datetime
 
-from common.setup_logging import setup_logging
-from stt.whisper import load_pipeline
-from download.dlp import download_video
-from metadata.google_api import get_video_statistics
-from categorize.chatgpt import get_text_category
+from src.common.setup_logging import setup_logging
+from src.stt.whisper import load_pipeline
+from src.download.dlp import download_video
+from src.metadata.google_api import get_video_statistics
+from src.categorize.chatgpt import get_text_category
 
 logger = logging.getLogger(__name__)
 setup_logging()

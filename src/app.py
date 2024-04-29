@@ -1,5 +1,5 @@
 from flask import Flask, jsonify, request
-from flows import video_categorization, VIDEO_ID, TRANSCRIPT
+from src.flows import video_categorization, VIDEO_ID, TRANSCRIPT
 
 app = Flask(__name__)
 app.config["JSON_AS_ASCII"] = False
