@@ -33,3 +33,9 @@ If you're running this app in production mode:
     conda activate the-premium-ai-api
 2. Run in production mode:
     gunicorn -w 4 src.app:app
+
+
+
+Links that may help improve this project:
+https://github.com/bajcmartinez/flask-api-starter-kit/tree/master
+https://auth0.com/blog/best-practices-for-flask-api-development/

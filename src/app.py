@@ -1,4 +1,5 @@
 from flask import Flask, jsonify, request # type: ignore
+from werkzeug.middleware.proxy_fix import ProxyFix # type: ignore
 from src.flows import video_categorization, VIDEO_ID, TRANSCRIPT
 
 app = Flask(__name__)
@@ -6,9 +7,10 @@ app.config["JSON_AS_ASCII"] = False
 app.config["JSONIFY_MIMETYPE"] = "application/json; charset=utf-8"
 
 
-# TODO: use the following links to improve the project if needed
-# https://github.com/bajcmartinez/flask-api-starter-kit/tree/master
-# https://auth0.com/blog/best-practices-for-flask-api-development/
+app.wsgi_app = ProxyFix(
+    app.wsgi_app, x_for=1, x_proto=0, x_host=0, x_prefix=0
+    # app.wsgi_app, x_for=1, x_proto=1, x_host=1, x_prefix=1
+)
 
 
 # .../test
