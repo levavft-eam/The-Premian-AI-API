@@ -1,3 +1,5 @@
 !.env
+.env
 .idea
 *.mp3
+*.pyc
