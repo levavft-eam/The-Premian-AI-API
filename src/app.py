@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request # type: ignore
 from src.flows import video_categorization, VIDEO_ID, TRANSCRIPT
 
 app = Flask(__name__)
