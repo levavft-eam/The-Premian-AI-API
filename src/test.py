@@ -11,7 +11,7 @@ setup_logging()
 
 
 def main():
-    test3()
+    test_google_api()
 
 
 if __name__ == '__main__':
