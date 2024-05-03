@@ -51,7 +51,7 @@ def fail():
 @app.route('/categorize', methods=['GET'])
 def categorize():
     video_id = request.args.get('v_id')
-    return jsonify(video_categorization(video_id, transcript=TRANSCRIPT))  # TODO: remove transcript=TRANSCRIPT
+    return jsonify(video_categorization(video_id))
 
 
 if __name__ == '__main__':
