@@ -29,6 +29,11 @@ def download_video(video_id, archive=True):
 
     with YoutubeDL(ydl_opts) as ydl:
         ydl.download([video_url])
+
+    global final_filename
+    if final_filename in {None, ""}:
+        # TODO: search the data directory for files starting with {video_id} instead.
+        final_filename = f"{video_id}.webm"
     return final_filename
 
 
