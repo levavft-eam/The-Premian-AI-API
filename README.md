@@ -34,6 +34,18 @@ If you're running this app in production mode:
 2. Run in production mode:
     gunicorn -w 4 src.app:app
 
+Extra gunicorn flags:
+    --reload: Restart workers when code changes.
+
+List running gunicorn process:
+    ps aux | grep -v grep | grep -E "(gunicorn|PID)"
+
+List PID's only of running gunicorn process:
+    ps aux | grep -v grep | grep -E "gunicorn" | awk '//{print $2}'
+
+Kill the gunicorn process:
+    pkill gunicorn
+
 
 
 Links that may help improve this project:
