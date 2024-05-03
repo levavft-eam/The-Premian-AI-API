@@ -1,0 +1,1 @@
+This file's only job is to preserve the folder 'data' when there is no data.
