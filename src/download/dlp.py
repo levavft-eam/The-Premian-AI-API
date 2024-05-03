@@ -2,7 +2,7 @@ from yt_dlp import YoutubeDL # type: ignore
 from pathlib import Path
 
 THIS_FOLDER = Path(__file__).parent.resolve()
-BASE_DIR = THIS_FOLDER / '..' / '..' / 'data'
+DATA_dir = THIS_FOLDER / '..' / '..' / 'data'
 
 
 final_filename = None
@@ -18,7 +18,7 @@ def download_video(video_id, archive=True):
 
     ydl_opts = {
         'format': 'bestaudio',
-        'outtmpl': f'{BASE_DIR}/%(id)s.%(ext)s',
+        'outtmpl': f'{DATA_dir}/%(id)s.%(ext)s',
         'progress_hooks': [_yt_dlp_monitor]
         # 'postprocessors': [{
         #     'key': 'ExecAfterDownload',  # Execute a command after download
