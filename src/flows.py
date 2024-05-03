@@ -32,7 +32,8 @@ def video_categorization(video_id, transcript=None, audio_file_path=None):
                                          result['transcript']])  # TODO: Improve this...
     result['categories'] = {
         'youtubeCategory': result['category'],
-        'GPT3.5FreeCategory': get_text_category(result['AIReadyText'])
+        'GPT3.5FreeCategory': get_text_category(result['AIReadyText'], 0),
+        'GPT3.5CategoryFromList': get_text_category(result['AIReadyText'], 2)
     }
 
     logger.info('Done categorizing.')
