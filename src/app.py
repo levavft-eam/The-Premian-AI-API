@@ -52,6 +52,9 @@ def fail():
 def categorize():
     video_id = request.args.get('v_id')
     use_openapi_transcription = request.args.get('use_openai', default=False)
+    if ((isinstance(use_openapi_transcription, str) and use_openapi_transcription.lower().startswith('t')) or
+            (isinstance(use_openapi_transcription, int) and use_openapi_transcription > 0)):
+        use_openapi_transcription = True
     return jsonify(video_categorization(video_id, use_openai=use_openapi_transcription))
 
 
