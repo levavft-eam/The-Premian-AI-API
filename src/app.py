@@ -51,7 +51,8 @@ def fail():
 @app.route('/categorize', methods=['GET'])
 def categorize():
     video_id = request.args.get('v_id')
-    return jsonify(video_categorization(video_id))
+    use_openapi_transcription = request.args.get('use_openai', default=False)
+    return jsonify(video_categorization(video_id, use_openai=use_openapi_transcription))
 
 
 if __name__ == '__main__':
