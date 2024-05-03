@@ -1,3 +1,4 @@
+TODO:
 1. make a caching system
 2. support categorization of any text (date - 10/5)
 3. give estimated running time api
