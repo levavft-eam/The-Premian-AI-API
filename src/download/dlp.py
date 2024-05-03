@@ -1,7 +1,8 @@
-from yt_dlp import YoutubeDL
-import os
+from yt_dlp import YoutubeDL # type: ignore
+from pathlib import Path
 
-BASE_DIR = "../data"
+THIS_FOLDER = Path(__file__).parent.resolve()
+BASE_DIR = THIS_FOLDER / '..' / 'data'
 
 
 final_filename = None

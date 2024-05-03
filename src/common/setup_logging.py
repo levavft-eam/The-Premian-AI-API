@@ -1,10 +1,10 @@
 import logging
 import logging.config
-from pathlib import Path, PurePath
+from pathlib import Path
 
 import os
 from datetime import datetime
-from dotenv import find_dotenv, load_dotenv
+from dotenv import find_dotenv, load_dotenv # type: ignore
 
 # find .env file in parent directory
 env_file = find_dotenv()
