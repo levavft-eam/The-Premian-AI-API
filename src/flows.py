@@ -3,6 +3,7 @@ import json
 from datetime import datetime
 
 from src.stt.whisper import load_pipeline
+from src.stt.open_ai import stt as open_ai_stt
 from src.download.dlp import download_video
 from src.metadata.google_api import get_video_statistics
 from src.categorize.chatgpt import get_text_category
@@ -14,15 +15,19 @@ TRANSCRIPT = """핸드폰 요금 왜 이렇게 많이 나와 이거? 그래서 �
 VIDEO_ID = "c8OwVTBdE6s"
 
 
-def video_categorization(video_id, transcript=None, audio_file_path=None):
+def video_categorization(video_id, transcript=None, audio_file_path=None, use_openai=False):
     logger.info(f'Categorizing video with {video_id=}, {transcript=}, {audio_file_path=}')
     result = get_video_statistics(video_id)
 
     if transcript is None:
         if audio_file_path is None:
             audio_file_path = download_video(video_id, False)
-        pipeline = load_pipeline()
-        result['transcript'] = pipeline(audio_file_path, generate_kwargs={"language": "korean"})["text"]
+
+        if use_openai:
+            result['transcript'] = open_ai_stt(audio_file_path)
+        else:
+            pipeline = load_pipeline()
+            result['transcript'] = pipeline(audio_file_path, generate_kwargs={"language": "korean"})["text"]
     else:
         result['transcript'] = TRANSCRIPT
 
@@ -42,6 +47,16 @@ def video_categorization(video_id, transcript=None, audio_file_path=None):
 
 def test():
     result = video_categorization(VIDEO_ID, transcript=TRANSCRIPT)
+    logger.info(json.dumps(result, ensure_ascii=False))  # https://jsonviewer.stack.hu/
+
+
+def test2():
+    result = video_categorization("mgLeCd5zQ5E")
+    logger.info(json.dumps(result, ensure_ascii=False))  # https://jsonviewer.stack.hu/
+
+
+def test3():
+    result = video_categorization("mgLeCd5zQ5E", use_openai=True)
     logger.info(json.dumps(result, ensure_ascii=False))  # https://jsonviewer.stack.hu/
 
 
