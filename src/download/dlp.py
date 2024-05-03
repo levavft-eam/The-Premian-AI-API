@@ -1,4 +1,4 @@
-from yt_dlp import YoutubeDL # type: ignore
+from yt_dlp import YoutubeDL  # type: ignore
 from pathlib import Path
 
 THIS_FOLDER = Path(__file__).parent.resolve()
