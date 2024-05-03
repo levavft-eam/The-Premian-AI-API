@@ -1,0 +1,8 @@
+1. make a caching system
+2. support categorization of any text (date - 10/5)
+3. give estimated running time api
+4. get youtube channel info (esp - subscribers & number of vids) (basic check - 3/5)
+5. create a categorization based on keyword distances
+6. fix nginx timeout bug (critical) https://ubiq.co/tech-blog/increase-request-timeout-nginx/
+7. improve chatgpt request messages......
+8. create test data
