@@ -2,7 +2,7 @@ import logging
 from flask import Flask, jsonify, request, g, Response  # type: ignore
 from werkzeug.middleware.proxy_fix import ProxyFix  # type: ignore
 
-from src.flows import video_categorization, VIDEO_ID, TRANSCRIPT
+from src.flows import video_categorization, VIDEO_ID, TRANSCRIPT, youtube_channel_statistics
 from src.common.setup_logging import setup_logging
 
 
@@ -52,10 +52,18 @@ def fail():
 def categorize():
     video_id = request.args.get('v_id')
     use_openapi_transcription = request.args.get('use_openai', default=False)
+
     if ((isinstance(use_openapi_transcription, str) and use_openapi_transcription.lower().startswith('t')) or
             (isinstance(use_openapi_transcription, int) and use_openapi_transcription > 0)):
         use_openapi_transcription = True
     return jsonify(video_categorization(video_id, use_openai=use_openapi_transcription))
+
+
+# .../youtube/channel_statistics?channel_handle=<channel_handle>
+@app.route('/youtube/channel_statistics', methods=['GET'])
+def channel_statistics():
+    channel_handle = request.args.get('channel_handle')
+    return jsonify(youtube_channel_statistics(channel_handle))
 
 
 if __name__ == '__main__':
