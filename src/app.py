@@ -41,7 +41,7 @@ def run_test():
     return jsonify(video_categorization(VIDEO_ID, transcript=TRANSCRIPT))
 
 
-# .../test
+# .../fail
 @app.route('/fail', methods=['GET'])
 def fail():
     raise Exception("Failing on purpose")
