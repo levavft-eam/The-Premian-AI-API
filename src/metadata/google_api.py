@@ -104,7 +104,7 @@ def test():
     # logger.info(pformat(get_video_statistics(video_id)))
 
     # channel_handle = "@Coachella"
-    # logger.info(pformat(get_youtuber_statistics(channel_handle)))
+    # logger.info(pformat(get_channel_statistics(channel_handle)))
 
     # channel_id = "UCHF66aWLOxBW4l6VkSrS3cQ"
     # logger.info(pformat(get_channel_sections(channel_id)))
