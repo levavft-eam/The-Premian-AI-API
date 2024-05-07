@@ -52,7 +52,8 @@ List running gunicorn process:
 List PID's only of running gunicorn process:
     ps aux | grep -v grep | grep -E "gunicorn" | awk '//{print $2}'
 
-
+NGINX config can be found at: 
+    /etc/nginx/sites-enabled/thepremian.com
 
 
 Links that may help improve this project:
