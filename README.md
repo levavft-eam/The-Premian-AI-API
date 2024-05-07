@@ -43,6 +43,8 @@ Relevant gunicorn flags:
     -w X: X is the number of workers to use.
     -t X: X is the number of seconds before timeout. This API has a very long run time, so 3600 (1 hour) is recommended.
 
+Kill the gunicorn process:
+    pkill gunicorn
 
 List running gunicorn process:
     ps aux | grep -v grep | grep -E "(gunicorn|PID)"
@@ -50,8 +52,6 @@ List running gunicorn process:
 List PID's only of running gunicorn process:
     ps aux | grep -v grep | grep -E "gunicorn" | awk '//{print $2}'
 
-Kill the gunicorn process:
-    pkill gunicorn
 
 
 
