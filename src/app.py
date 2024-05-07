@@ -36,19 +36,19 @@ def log_details(response: Response):
 
 
 # .../test
-@app.route('test/partial_video_categorization', methods=['GET'])
+@app.route('/test/partial_video_categorization', methods=['GET'])
 def run_test():
     return jsonify(video_categorization(VIDEO_ID, transcript=TRANSCRIPT))
 
 
 # .../fail
-@app.route('test/crash', methods=['GET'])
+@app.route('/test/crash', methods=['GET'])
 def fail():
     raise Exception("Crashing on purpose")
 
 
 # .../categorize?v_id=<v_id>
-@app.route('video/categorize', methods=['GET'])
+@app.route('/video/categorize', methods=['GET'])
 def categorize():
     video_id = request.args.get('v_id')
 
@@ -60,7 +60,7 @@ def categorize():
     return jsonify(video_categorization(video_id, use_openai=use_openapi_transcription))
 
 
-@app.route('text/categorize', methods=['GET'])
+@app.route('/text/categorize', methods=['GET'])
 def text_categorize():
     text = request.args.get('text')
     return jsonify(text_categorization(text))
