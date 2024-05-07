@@ -2,7 +2,7 @@ import logging
 from flask import Flask, jsonify, request, g, Response  # type: ignore
 from werkzeug.middleware.proxy_fix import ProxyFix  # type: ignore
 
-from src.flows import video_categorization, VIDEO_ID, TRANSCRIPT, youtube_channel_statistics
+from src.flows import video_categorization, VIDEO_ID, TRANSCRIPT, youtube_channel_statistics, text_categorization
 from src.common.setup_logging import setup_logging
 
 
@@ -36,27 +36,34 @@ def log_details(response: Response):
 
 
 # .../test
-@app.route('/test', methods=['GET'])
+@app.route('test/partial_video_categorization', methods=['GET'])
 def run_test():
     return jsonify(video_categorization(VIDEO_ID, transcript=TRANSCRIPT))
 
 
 # .../fail
-@app.route('/fail', methods=['GET'])
+@app.route('test/crash', methods=['GET'])
 def fail():
-    raise Exception("Failing on purpose")
+    raise Exception("Crashing on purpose")
 
 
 # .../categorize?v_id=<v_id>
-@app.route('/categorize', methods=['GET'])
+@app.route('video/categorize', methods=['GET'])
 def categorize():
     video_id = request.args.get('v_id')
-    use_openapi_transcription = request.args.get('use_openai', default=False)
 
+    use_openapi_transcription = request.args.get('use_openai', default=False)
     if ((isinstance(use_openapi_transcription, str) and use_openapi_transcription.lower().startswith('t')) or
             (isinstance(use_openapi_transcription, int) and use_openapi_transcription > 0)):
         use_openapi_transcription = True
+
     return jsonify(video_categorization(video_id, use_openai=use_openapi_transcription))
+
+
+@app.route('text/categorize', methods=['GET'])
+def text_categorize():
+    text = request.args.get('text')
+    return jsonify(text_categorization(text))
 
 
 # .../youtube/channel_statistics?channel_handle=<channel_handle>
