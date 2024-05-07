@@ -35,8 +35,9 @@ def video_categorization(video_id, transcript=None, audio_file_path=None, use_op
                                          result['title'],
                                          result['description'],
                                          result['transcript']])  # TODO: Improve this...
+    
     result['categories'] = text_categorization(result['AIReadyText'])
-    result['categories'] = result['category']
+    result['categories']['youtubeCategory'] = result['category']
 
     logger.info('Done categorizing.')
     return result
