@@ -1,10 +1,8 @@
 TODO:
 1. make a caching system
-2. support categorization of any text (date - 10/5)
 3. give estimated running time api
 5. create a categorization based on keyword distances
-6. fix nginx timeout bug (critical) https://ubiq.co/tech-blog/increase-request-timeout-nginx/
 7. improve chatgpt request messages......
-8. create test data
 9. try and figure out if logging is working properly or not in the prod environment...
 10. create general paging in google_api
+11. support categorization of LONG text with post requests... (10/5)
