@@ -1,4 +1,5 @@
 import os
+import json
 import logging
 from pprint import pformat
 from functools import cache
@@ -17,18 +18,40 @@ youtube = build(api_service_name, api_version, developerKey=GOOGLE_API_KEY)
 
 
 def get_playlist_items(playlist_id):
-    return youtube.playlistItems().list(
-        part="snippet,contentDetails,id",
-        playlistId=playlist_id
-    ).execute()
+    next_page_token = None
+    results = []
+    while True:
+        results.append(youtube.playlistItems().list(
+            part="snippet,contentDetails,id",
+            playlistId=playlist_id,
+            pageToken=next_page_token,
+        ).execute())
+
+        next_page_token = results[-1].get('nextPageToken')
+
+        if next_page_token is None:
+            break
+
+    return [item for r in results for item in r['items']]
 
 
 def get_channel_playlists(channel_id):
-    return youtube.playlists().list(
-        part="contentDetails, id, snippet",
-        channelId=channel_id,
-        # maxResults=30
-    ).execute()
+    next_page_token = None
+    results = []
+    while True:
+        results.append(youtube.playlists().list(
+            part="contentDetails, id, snippet",
+            channelId=channel_id,
+            pageToken=next_page_token,
+            # maxResults=30
+        ).execute())
+
+        next_page_token = results[-1].get('nextPageToken')
+
+        if next_page_token is None:
+            break
+
+    return [item for r in results for item in r['items']]
 
 
 # prob useless
@@ -107,10 +130,9 @@ def test():
     # logger.info(pformat(get_channel_statistics(channel_handle)))
 
     # channel_id = "UCHF66aWLOxBW4l6VkSrS3cQ"
-    # logger.info(pformat(get_channel_sections(channel_id)))
-    # logger.info(pformat(get_channel_playlists(channel_id)))
+    # logger.info(json.dumps(get_channel_playlists(channel_id), ensure_ascii=False))  # https://jsonviewer.stack.hu/
 
-    playlist_id = "PLIjqRbAQP0WI1kdiUTD8btfDOGMSZ950U"
-    logger.info(pformat(get_playlist_items(playlist_id)))
+    playlist_id = "PLIjqRbAQP0WK7RdK-yzcfVmE3k_O5Xpff"
+    logger.info(json.dumps(get_playlist_items(playlist_id), ensure_ascii=False))  # https://jsonviewer.stack.hu/
 
 
