@@ -55,6 +55,13 @@ List PID's only of running gunicorn process:
 NGINX config can be found at: 
     /etc/nginx/sites-enabled/thepremian.com
 
+NGINX restart:
+1. Check that the changed config is OK
+    sudo nginx -t
+2. Restart nginx
+    sudo systemctl restart nginx
+3. Check that it is running
+    sudo systemctl status nginx
 
 Links that may help improve this project:
 https://github.com/bajcmartinez/flask-api-starter-kit/tree/master
