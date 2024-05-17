@@ -2,7 +2,8 @@ import logging
 from flask import Flask, jsonify, request, g, Response  # type: ignore
 from werkzeug.middleware.proxy_fix import ProxyFix  # type: ignore
 
-from src.flows import video_categorization, VIDEO_ID, TRANSCRIPT, youtube_channel_statistics, text_categorization
+from src.flows import (video_categorization, VIDEO_ID, TRANSCRIPT, youtube_channel_statistics, text_categorization,
+                       video_basic_information)
 from src.common.setup_logging import setup_logging
 
 
@@ -58,6 +59,12 @@ def categorize():
         use_openapi_transcription = True
 
     return jsonify(video_categorization(video_id, use_openai=use_openapi_transcription))
+
+
+@app.route('/video/basic_information', methods=['GET'])
+def get_basic_information():
+    video_id = request.args.get('v_id')
+    return jsonify(video_basic_information(video_id))
 
 
 @app.route('/text/categorize', methods=['GET'])
