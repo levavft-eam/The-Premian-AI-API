@@ -39,7 +39,10 @@ def log_details(response: Response):
 
 @app.errorhandler(BadRequest)
 def handle_bad_request(e):
-    return e, 400
+    return jsonify({
+        "result": False,
+        "error message": str(e)
+    }), 400
 
 
 @app.route('/test/partial_video_categorization', methods=['GET'])
