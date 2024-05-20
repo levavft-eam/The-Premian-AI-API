@@ -1,6 +1,7 @@
 import logging
 from flask import Flask, jsonify, request, g, Response  # type: ignore
 from werkzeug.middleware.proxy_fix import ProxyFix  # type: ignore
+from werkzeug.exceptions import BadRequest
 
 from src.flows import (video_categorization, VIDEO_ID, TRANSCRIPT, youtube_channel_statistics, text_categorization,
                        video_basic_information)
@@ -36,13 +37,16 @@ def log_details(response: Response):
     return response
 
 
-# .../test
+@app.errorhandler(BadRequest)
+def handle_bad_request(e):
+    return e, 400
+
+
 @app.route('/test/partial_video_categorization', methods=['GET'])
 def run_test():
     return jsonify(video_categorization(VIDEO_ID, transcript=TRANSCRIPT))
 
 
-# .../fail
 @app.route('/test/crash', methods=['GET'])
 def fail():
     raise Exception("Crashing on purpose")
@@ -63,10 +67,10 @@ def categorize():
 
 @app.route('/video/basic_information', methods=['GET'])
 def get_basic_information():
-    try:
-        video_id = request.args.get('v_id')
-    except Exception as e:
-        return e
+    url_format = "/video/basic_information?v_id=<video id>"
+    video_id = request.args.get('v_id')
+    if video_id is None:
+        raise Exception(f"Received bad request {request.url}. Url format is: {url_format}")
     return jsonify(video_basic_information(video_id))
 
 
