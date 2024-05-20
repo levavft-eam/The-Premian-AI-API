@@ -63,7 +63,10 @@ def categorize():
 
 @app.route('/video/basic_information', methods=['GET'])
 def get_basic_information():
-    video_id = request.args.get('v_id')
+    try:
+        video_id = request.args.get('v_id')
+    except Exception as e:
+        return e
     return jsonify(video_basic_information(video_id))
 
 
