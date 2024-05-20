@@ -70,7 +70,7 @@ def get_basic_information():
     url_format = "/video/basic_information?v_id=<video id>"
     video_id = request.args.get('v_id')
     if video_id is None:
-        raise Exception(f"Received bad request {request.url}. Url format is: {url_format}")
+        raise BadRequest(f"Received bad request {request.url}. Url format is: {url_format}")
     return jsonify(video_basic_information(video_id))
 
 
