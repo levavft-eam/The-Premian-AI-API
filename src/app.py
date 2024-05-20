@@ -45,6 +45,14 @@ def handle_bad_request(e):
     }), 400
 
 
+@app.errorhandler(Exception)
+def handle_generic_exception(e):
+    return jsonify({
+        "result": False,
+        "error message": str(e)
+    }), 403
+
+
 @app.route('/test/partial_video_categorization', methods=['GET'])
 def run_test():
     return jsonify(video_categorization(VIDEO_ID, transcript=TRANSCRIPT))
@@ -58,7 +66,10 @@ def fail():
 # .../categorize?v_id=<v_id>
 @app.route('/video/categorize', methods=['GET'])
 def categorize():
+    url_format = "/video/categorize?v_id=<video id>"
     video_id = request.args.get('v_id')
+    if video_id is None:
+        raise BadRequest(f"{request.url}. Expected url format: {url_format}")
 
     use_openapi_transcription = request.args.get('use_openai', default=False)
     if ((isinstance(use_openapi_transcription, str) and use_openapi_transcription.lower().startswith('t')) or
@@ -73,13 +84,18 @@ def get_basic_information():
     url_format = "/video/basic_information?v_id=<video id>"
     video_id = request.args.get('v_id')
     if video_id is None:
-        raise BadRequest(f"Received bad request {request.url}. Url format is: {url_format}")
+        raise BadRequest(f"{request.url}. Expected url format: {url_format}")
+
     return jsonify(video_basic_information(video_id))
 
 
 @app.route('/text/categorize', methods=['GET'])
 def text_categorize():
+    url_format = "/text/categorize?text=<text>"
     text = request.args.get('text')
+    if text is None:
+        raise BadRequest(f"{request.url}. Expected url format: {url_format}")
+
     return jsonify(text_categorization(text))
 
 
@@ -87,6 +103,10 @@ def text_categorize():
 @app.route('/youtube/channel_statistics', methods=['GET'])
 def channel_statistics():
     channel_handle = request.args.get('channel_handle')
+    url_format = "/youtube/channel_statistics?channel_handle=<channel handle>"
+    if channel_handle is None:
+        raise BadRequest(f"{request.url}. Expected url format: {url_format}")
+
     return jsonify(youtube_channel_statistics(channel_handle))
 
 
