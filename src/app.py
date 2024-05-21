@@ -1,5 +1,7 @@
 import logging
 from flask import Flask, jsonify, request, g, Response  # type: ignore
+from flask_cors import CORS
+
 from werkzeug.middleware.proxy_fix import ProxyFix  # type: ignore
 from werkzeug.exceptions import BadRequest
 
@@ -13,6 +15,7 @@ setup_logging()
 
 
 app = Flask(__name__)
+CORS(app)
 app.config["JSON_AS_ASCII"] = False
 app.config["JSONIFY_MIMETYPE"] = "application/json; charset=utf-8"
 
