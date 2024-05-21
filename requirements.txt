@@ -14,3 +14,4 @@ openai
 flask
 gunicorn
 Werkzeug
+flask-cors
