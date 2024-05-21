@@ -1,9 +1,9 @@
 import logging
 from flask import Flask, jsonify, request, g, Response  # type: ignore
-from flask_cors import CORS
+from flask_cors import CORS # type: ignore
 
 from werkzeug.middleware.proxy_fix import ProxyFix  # type: ignore
-from werkzeug.exceptions import BadRequest
+from werkzeug.exceptions import BadRequest # type: ignore
 
 from src.flows import (video_categorization, VIDEO_ID, TRANSCRIPT, youtube_channel_statistics, text_categorization,
                        video_basic_information)
