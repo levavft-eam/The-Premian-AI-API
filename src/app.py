@@ -41,9 +41,9 @@ def log_details(response: Response):
 
 
 def handle_exception(e):
-    assert isinstance(e, KeyError)
+    assert isinstance(e, Exception)
     logger.error(e, exc_info=True)
-    # raise e
+
     return jsonify({
         "result": False,
         "error message": e.__repr__()
@@ -70,7 +70,6 @@ def fail():
     raise Exception("Crashing on purpose")
 
 
-# .../categorize?v_id=<v_id>
 @app.route('/video/categorize', methods=['GET'])
 def categorize():
     url_format = "/video/categorize?v_id=<video id>"
@@ -96,18 +95,26 @@ def get_basic_information():
     return jsonify(video_basic_information(video_id))
 
 
-@app.route('/text/categorize', methods=['GET'])
+@app.route('/text/categorize', methods=['GET', 'POST'])
 def text_categorize():
-    url_format = "/text/categorize?text=<text>"
-    text = request.args.get('text')
+    text = None
+    if request.method == "GET":
+        url_format = "/text/categorize?text=<text>"
+        text = request.args.get('text')
+        if text is None:
+            raise BadRequest(f"{request.url}. Expected url format: {url_format}")
+
+    elif request.method == "POST":
+        text = request.json.get("text")
+        if text is None:
+            raise BadRequest(f"{request.url}. Expected a json body with a 'text' field. Recieved: {request.json}")
+
     if text is None:
-        raise BadRequest(f"{request.url}. Expected url format: {url_format}")
+            raise BadRequest(f"{request.url}.")
     
     return jsonify(text_categorization(text))
 
 
-
-# .../youtube/channel_statistics?channel_handle=<channel_handle>
 @app.route('/youtube/channel_statistics', methods=['GET'])
 def channel_statistics():
     channel_handle = request.args.get('channel_handle')
