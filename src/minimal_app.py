@@ -14,19 +14,19 @@ app = Flask(__name__)
 def text_categorize():
     logger.warn(request.method)
     
-    return ""
+    return "hi", 200
 
 @app.route('/text/categorize_long', methods=['POST'])
 def text_categorize_long():
     logger.warn(request.method)
 
-    return ""
+    return "hi", 200
 
 @app.route('/text/categorize_both', methods=['GET', 'POST'])
 def blahblah():
     logger.warn(request.method)
 
-    return ""
+    return "hi", 200
 
 
 # @app.route('/text/categorize_long', methods=['POST'])
