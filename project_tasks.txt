@@ -6,3 +6,4 @@ TODO:
 9. try and figure out if logging is working properly or not in the prod environment...
 10. create general paging in google_api
 11. support categorization of LONG text with post requests... (10/5)
+12. experiment with alternatives to openai chatgpt that I have at home.
