@@ -101,7 +101,7 @@ def get_video_statistics(video_id):
     )
 
     for item in required_items:
-        result[item] = snippet[item]
+        result[item] = snippet.get(item)
 
     video_categories = _get_video_categories()
     result['category'] = video_categories[result['categoryId']]
