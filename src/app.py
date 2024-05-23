@@ -40,20 +40,24 @@ def log_details(response: Response):
     return response
 
 
-@app.errorhandler(BadRequest)
-def handle_bad_request(e):
+def handle_exception(e):
+    assert isinstance(e, KeyError)
+    logger.error(e, exc_info=True)
+    # raise e
     return jsonify({
         "result": False,
-        "error message": str(e)
-    }), 400
+        "error message": e.__repr__()
+    })
+
+
+@app.errorhandler(BadRequest)
+def handle_bad_request(e):
+    return handle_exception(e), 400
 
 
 @app.errorhandler(Exception)
 def handle_generic_exception(e):
-    return jsonify({
-        "result": False,
-        "error message": str(e)
-    }), 403
+    return handle_exception(e), 500
 
 
 @app.route('/test/partial_video_categorization', methods=['GET'])
@@ -98,8 +102,9 @@ def text_categorize():
     text = request.args.get('text')
     if text is None:
         raise BadRequest(f"{request.url}. Expected url format: {url_format}")
-
+    
     return jsonify(text_categorization(text))
+
 
 
 # .../youtube/channel_statistics?channel_handle=<channel_handle>
