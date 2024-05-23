@@ -7,3 +7,4 @@ TODO:
 10. create general paging in google_api
 11. support categorization of LONG text with post requests... (10/5)
 12. experiment with alternatives to openai chatgpt that I have at home.
+13. try to see if I can return channel handle in the channel statistics API
