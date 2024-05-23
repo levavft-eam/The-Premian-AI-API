@@ -3,8 +3,8 @@ import json
 import logging
 from pprint import pformat
 from functools import cache
-from googleapiclient.discovery import build
-from dotenv import find_dotenv, load_dotenv
+from googleapiclient.discovery import build # type: ignore
+from dotenv import find_dotenv, load_dotenv # type: ignore
 
 env_file = find_dotenv()
 load_dotenv()
