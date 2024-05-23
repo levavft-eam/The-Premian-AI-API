@@ -52,6 +52,12 @@ List running gunicorn process:
 List PID's only of running gunicorn process:
     ps aux | grep -v grep | grep -E "gunicorn" | awk '//{print $2}'
 
+List PID's of stopped jobs:
+    jobs -ps
+
+Kill all stopped jobs:
+    kill -9 `jobs -ps`
+
 NGINX config can be found at: 
     /etc/nginx/sites-enabled/thepremian.com
 
