@@ -1,3 +1,5 @@
+Installation instructions:
+
 If you're installing this app on a new server:
 
 1. Navigate to where you want the repository
@@ -24,6 +26,8 @@ If you're installing this app on a new server:
     If you're in a production environment, make sure 'ENV=prod' is in .env and not 'ENV=dev'.
 
 
+Running instructions:
+
 If you're running this app in development (debug) mode:
 
 1. Activate the conda environment by running:
@@ -43,8 +47,8 @@ Relevant gunicorn flags:
     -w X: X is the number of workers to use.
     -t X: X is the number of seconds before timeout. This API has a very long run time, so 3600 (1 hour) is recommended.
 
-Kill the gunicorn process:
-    pkill gunicorn
+
+Listing procecess instructions:
 
 List running gunicorn process:
     ps aux | grep -v grep | grep -E "(gunicorn|PID)"
@@ -55,8 +59,17 @@ List PID's only of running gunicorn process:
 List PID's of stopped jobs:
     jobs -ps
 
+
+Killing instructions:
+
+Kill the gunicorn process:
+    pkill gunicorn
+
 Kill all stopped jobs:
     kill -9 `jobs -ps`
+
+
+NGINX info:
 
 NGINX config can be found at: 
     /etc/nginx/sites-enabled/thepremian.com
@@ -68,6 +81,9 @@ NGINX restart:
     sudo systemctl restart nginx
 3. Check that it is running
     sudo systemctl status nginx
+
+
+Extra:
 
 Links that may help improve this project:
 https://github.com/bajcmartinez/flask-api-starter-kit/tree/master
