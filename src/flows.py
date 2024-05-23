@@ -66,8 +66,8 @@ def text_categorization(text):
     }
 
 
-def youtube_channel_statistics(channel_handle):
-    return get_channel_statistics(channel_handle)
+def youtube_channel_statistics(channel_handle, channel_id):
+    return get_channel_statistics(channel_handle, channel_id)
 
 
 def list_videos(channel_id):

@@ -118,11 +118,11 @@ def text_categorize():
 @app.route('/youtube/channel_statistics', methods=['GET'])
 def channel_statistics():
     channel_handle = request.args.get('channel_handle')
-    url_format = "/youtube/channel_statistics?channel_handle=<channel handle>"
-    if channel_handle is None:
-        raise BadRequest(f"{request.url}. Expected url format: {url_format}")
+    channel_id = request.args.get('channel_id')
+    if (channel_handle is channel_id is None) or None not in {channel_id, channel_handle}:
+        raise BadRequest(f"{request.url}. Expected exactly one of 'channel_id' and 'channel_handle' to be specified.")
 
-    return jsonify(youtube_channel_statistics(channel_handle))
+    return jsonify(youtube_channel_statistics(channel_handle, channel_id))
 
 
 if __name__ == '__main__':

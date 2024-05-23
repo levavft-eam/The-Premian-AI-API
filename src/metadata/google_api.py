@@ -62,11 +62,15 @@ def get_channel_sections(channel_id):
     ).execute()
 
 
-def get_channel_statistics(channel_handle):
+def get_channel_statistics(channel_handle=None, channel_id=None):
+    if channel_handle is channel_id is None:
+        raise Exception(f"get_channel_statistics requires one of channel_handle and channel_id to be set but: {channel_handle=}, {channel_id=}")
+    
     request = youtube.channels().list(
         part="brandingSettings,contentDetails,contentOwnerDetails,id,localizations,snippet,statistics,status,"
              "topicDetails",
-        forHandle=channel_handle
+        forHandle=channel_handle,
+        id=channel_id
     )
 
     return request.execute()
