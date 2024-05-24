@@ -1,5 +1,6 @@
 import logging
 import json
+import re
 from datetime import datetime, timedelta
 
 from src.stt.whisper import load_pipeline
@@ -16,9 +17,23 @@ VIDEO_ID = "c8OwVTBdE6s"
 
 
 def parse_video_duration(text):
-    # assume the text is in format: PT12M56S
-    t = datetime.strptime(text, "PT%HM%M%SS")
-    delta = timedelta(hours=t.hour, minutes=t.minute, seconds=t.second)
+    # text format examples:
+    # PT4H32M57S
+    # PT12M56S
+    # PT2M6S
+    # PT9M
+    # PT58S
+
+    # Regex explanation:
+    # (?:...) creates a group that isn't captured.
+    # (?P<name>...) creates a named group.
+    # This way, (?:(?P<h>\d+)H)? will capture the numbers before an 'H' if an 'H' exists and save them to 'h'
+    rex = re.compile(r"PT(?:(?P<h>\d+)H)?(?:(?P<m>\d+)M)?(?:(?P<s>\d+)S)?")
+    match = rex.match(text)
+    logger.debug(f"{text=}, {match=}, {match.groups()=}, {match.groupdict()=}")
+    match_dict = {k: int(v) if v is not None else 0 for k, v in match.groupdict().items()}
+
+    delta = timedelta(hours=match_dict['h'], minutes=match_dict['m'], seconds=match_dict['s'])
     return delta
 
 
