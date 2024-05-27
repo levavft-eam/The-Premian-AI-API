@@ -40,7 +40,7 @@ If you're running this app in production mode:
 1. Activate the conda environment by running:
     conda activate the-premium-ai-api
 2. Run in production mode:
-    gunicorn -w 4 -t 3600 src.app:app
+    gunicorn -w 4 -t 3600 src.app:app &
 
 Relevant gunicorn flags:
     --reload: Restart workers when code changes.
