@@ -20,7 +20,8 @@ def download_video(video_id, archive=True):
         'format': 'bestaudio',
         'outtmpl': f'{DATA_DIR}/%(id)s.%(ext)s',
         'progress_hooks': [_yt_dlp_monitor],
-        'quiet': True 
+        # 'quiet': True,
+        # 'no_warnings': True, 
         # 'postprocessors': [{
         #     'key': 'ExecAfterDownload',  # Execute a command after download
         #     'exec_cmd': 'ffmpeg -i {} -ss 00:00:00 -t 30 -c copy {}_trimmed.mp4',  # Trim the first 30 seconds
