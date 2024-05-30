@@ -63,7 +63,15 @@ def get_channel_sections(channel_id):
 
 
 def get_channel_details(channel_handle=None, channel_id=None, n=None):
-    statistics = get_channel_statistics(channel_handle, channel_id)["items"][0]
+    statistics = get_channel_statistics(channel_handle, channel_id)
+    if str(statistics["pageInfo"]["totalResults"]) == "0":
+        identifier = channel_id if channel_handle is None else channel_handle
+        return {
+            "success": False,
+            "error": f"User with {identifier=} may not exist."
+        }
+
+    statistics = statistics["items"][0]
     channel_id = statistics["id"]
     channel_handle = statistics["snippet"]["customUrl"]
 
