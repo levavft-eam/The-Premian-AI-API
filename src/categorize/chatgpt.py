@@ -56,6 +56,24 @@ THIS_FOLDER = Path(__file__).parent.resolve()
 CATEGORY_EMBEDDINGS_FILE = THIS_FOLDER / '..' / '..' / 'data' / 'embeddings' / 'embeddings.json'
 
 
+def get_embedding(text):
+    client = OpenAI()
+    response = client.embeddings.create(
+        input=text,
+        model="text-embedding-ada-002"
+    )
+
+    return response.data[0].embedding
+
+
+def save_category_embeddings():
+    embeddings = {category: get_embedding(category) for category in CATEGORIES_KOREAN}
+    logger.info(f"Saving the following embeddings:\n{embeddings}")
+    with open(CATEGORY_EMBEDDINGS_FILE, 'w', encoding='utf-8') as f:
+        json.dump(embeddings, f, ensure_ascii=False, indent=4)
+    return embeddings
+
+
 def load_category_embeddings():
     if not os.path.isfile(CATEGORY_EMBEDDINGS_FILE):
         return save_category_embeddings()
@@ -92,21 +110,4 @@ def get_text_category(user_message, system_message_index=0):
 
     return completion.choices[0].message.content
 
-
-def get_embedding(text):
-    client = OpenAI()
-    response = client.embeddings.create(
-        input=text,
-        model="text-embedding-ada-002"
-    )
-
-    return response.data[0].embedding
-
-
-def save_category_embeddings():
-    embeddings = {category: get_embedding(category) for category in CATEGORIES_KOREAN}
-    logger.info(f"Saving the following embeddings:\n{embeddings}")
-    with open(CATEGORY_EMBEDDINGS_FILE, 'w', encoding='utf-8') as f:
-        json.dump(embeddings, f, ensure_ascii=False, indent=4)
-    return embeddings
 
