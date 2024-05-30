@@ -75,10 +75,10 @@ def video_categorization(video_id, transcript=None, audio_file_path=None, use_op
 
 
 def text_categorization(text):
-    logger.info(CATEGORY_EMBEDDINGS)
     return {
         'GPT3.5FreeCategory': get_text_category(text, 0),
-        'GPT3.5CategoryFromList': get_text_category(text, 2)
+        'GPT3.5CategoryFromList': get_text_category(text, 2),
+        'text-embedding-ada-002_embedding_based_categorization': 0
     }
 
 
