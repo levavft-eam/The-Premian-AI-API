@@ -51,6 +51,7 @@ SYSTEM_MESSAGES = (
     "You are a machine that categorizes the text you are given with one word.",
     f"You are a machine that chooses the most fitting category for the text you are given. You choose from this list: "
     f"```{CATEGORIES_KOREAN}```"
+    f"and return precisely one element of the list."
 )
 
 
