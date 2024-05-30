@@ -62,6 +62,39 @@ def get_channel_sections(channel_id):
     ).execute()
 
 
+def get_channel_details(channel_handle=None, channel_id=None, n=5):
+    statistics = get_channel_statistics(channel_handle, channel_id)[0]
+    channel_id = statistics["id"]
+    channel_handle = statistics["snippet"]["customUrl"]
+    videos = search_recent_n_videos(channel_id, channel_handle, n)
+    result = {
+        "channel": {
+            "country": statistics["brandingSettings"]["channel"]["country"],
+            "description": statistics["brandingSettings"]["channel"]["description"],
+            "title": statistics["brandingSettings"]["channel"]["title"],
+        },
+        "custom_url": statistics["snippet"]["customUrl"],
+        "published_at": statistics["snippet"]["publishedAt"],
+        "thumbnail_url": statistics["snippet"]["thumbnails"]["default"]["url"],
+        "statistics": statistics["statistics"],
+        "channel_id": channel_id,
+        "channel_handle": channel_handle,
+        "videos": []
+    }
+    for video in videos["items"]:
+        video_id = video["id"]["videoId"]
+        kind = video["id"]["kind"]
+        video_channel_id = video["snippet"]["channelId"]
+        if video_channel_id != channel_id or kind != "youtube#video":
+            continue
+        result["videos"].append({
+            "video_id": video_id,
+            "snippet": video["snippet"]
+        })
+
+    return result
+
+
 def get_channel_statistics(channel_handle=None, channel_id=None):
     if channel_handle is channel_id is None:
         raise Exception(f"get_channel_statistics requires one of channel_handle and channel_id to be set but: {channel_handle=}, {channel_id=}")
@@ -71,6 +104,19 @@ def get_channel_statistics(channel_handle=None, channel_id=None):
              "topicDetails",
         forHandle=channel_handle,
         id=channel_id
+    )
+
+    return request.execute()
+
+
+def search_recent_n_videos(channel_id, channel_handle, n=5):
+    request = youtube.search().list(
+        part="snippet",
+        channelId=channel_id,
+        maxResults=n,
+        order="date",
+        q=channel_handle,
+        type="video"
     )
 
     return request.execute()
