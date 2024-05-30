@@ -2,7 +2,7 @@ from yt_dlp import YoutubeDL  # type: ignore
 from pathlib import Path
 
 THIS_FOLDER = Path(__file__).parent.resolve()
-DATA_DIR = THIS_FOLDER / '..' / '..' / 'data'
+DATA_DIR = THIS_FOLDER / '..' / '..' / 'data' / 'videos'
 
 
 final_filename = None
