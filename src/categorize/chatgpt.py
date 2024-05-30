@@ -67,8 +67,7 @@ def get_embedding(text):
 
 
 def save_category_embeddings():
-    embeddings = {category: get_embedding(category) for category in CATEGORIES_KOREAN}
-    logger.info(f"Saving the following embeddings:\n{embeddings}")
+    embeddings = {category[0]: get_embedding(category[0]) for category in CATEGORIES}
     with open(CATEGORY_EMBEDDINGS_FILE, 'w', encoding='utf-8') as f:
         json.dump(embeddings, f, ensure_ascii=False, indent=4)
     return embeddings
