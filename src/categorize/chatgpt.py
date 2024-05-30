@@ -1,9 +1,15 @@
 from openai import OpenAI
 from dotenv import load_dotenv
-import pandas as pd
+import os
+# import pandas as pd
+import logging
+import json
+from pathlib import Path
 
 load_dotenv()
 CLIENT = OpenAI()
+
+logger = logging.getLogger(__name__)
 
 CATEGORIES = (
     ('엔터테인먼트·예술', 'Entertainment & Arts'),
@@ -43,7 +49,12 @@ CATEGORIES = (
     ('어학·외국어', 'Language & Foreign Languages'),
     ('교육·학문', 'Education & Academics')
 )
+
 CATEGORIES_KOREAN = "\n".join([c[0] for c in CATEGORIES])
+
+THIS_FOLDER = Path(__file__).parent.resolve()
+CATEGORY_EMBEDDINGS_FILE = THIS_FOLDER / '..' / '..' / 'data' / 'embeddings' / 'embeddings.json'
+CATEGORY_EMBEDDINGS = load_category_embeddings()
 
 
 SYSTEM_MESSAGES = (
@@ -81,3 +92,17 @@ def get_embedding(text):
     )
 
     return response.data[0].embedding
+
+
+def save_category_embeddings():
+    embeddings = {category: get_embedding(category) for category in CATEGORIES_KOREAN}
+    logger.info(f"Saving the following embeddings:\n{embeddings}")
+    with open(CATEGORY_EMBEDDINGS_FILE, 'w', encoding='utf-8') as f:
+        json.dump(embeddings, f, ensure_ascii=False, indent=4)
+    return embeddings
+
+def load_category_embeddings():
+    if not os.path.isfile(CATEGORY_EMBEDDINGS_FILE):
+        return save_category_embeddings()
+    with open(CATEGORY_EMBEDDINGS_FILE, 'r', encoding='utf-8') as f:
+        return json.load(f)
