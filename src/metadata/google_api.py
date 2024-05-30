@@ -63,7 +63,7 @@ def get_channel_sections(channel_id):
 
 
 def get_channel_details(channel_handle=None, channel_id=None, n=None):
-    statistics = get_channel_statistics(channel_handle, channel_id)[0]
+    statistics = get_channel_statistics(channel_handle, channel_id)["items"][0]
     channel_id = statistics["id"]
     channel_handle = statistics["snippet"]["customUrl"]
 
@@ -81,7 +81,7 @@ def get_channel_details(channel_handle=None, channel_id=None, n=None):
         "channel_handle": channel_handle,
         "videos": []
     }
-    
+
     videos = search_recent_n_videos(channel_id, channel_handle, n)
     for video in videos["items"]:
         video_id = video["id"]["videoId"]
