@@ -54,6 +54,15 @@ CATEGORIES_KOREAN = "\n".join([c[0] for c in CATEGORIES])
 
 THIS_FOLDER = Path(__file__).parent.resolve()
 CATEGORY_EMBEDDINGS_FILE = THIS_FOLDER / '..' / '..' / 'data' / 'embeddings' / 'embeddings.json'
+
+
+def load_category_embeddings():
+    if not os.path.isfile(CATEGORY_EMBEDDINGS_FILE):
+        return save_category_embeddings()
+    with open(CATEGORY_EMBEDDINGS_FILE, 'r', encoding='utf-8') as f:
+        return json.load(f)
+
+
 CATEGORY_EMBEDDINGS = load_category_embeddings()
 
 
@@ -101,8 +110,3 @@ def save_category_embeddings():
         json.dump(embeddings, f, ensure_ascii=False, indent=4)
     return embeddings
 
-def load_category_embeddings():
-    if not os.path.isfile(CATEGORY_EMBEDDINGS_FILE):
-        return save_category_embeddings()
-    with open(CATEGORY_EMBEDDINGS_FILE, 'r', encoding='utf-8') as f:
-        return json.load(f)
