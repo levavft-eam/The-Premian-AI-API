@@ -10,6 +10,7 @@ accelerate
 python-dotenv
 yt-dlp[default]
 pandas
+scipy
 openai
 flask
 gunicorn
