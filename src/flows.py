@@ -6,7 +6,7 @@ from datetime import datetime, timedelta
 from src.stt.whisper import load_pipeline
 from src.stt.open_ai import stt as open_ai_stt
 from src.download.dlp import download_video
-from src.metadata.google_api import get_video_statistics, get_channel_statistics
+from src.metadata.google_api import get_video_statistics, get_channel_statistics, get_channel_details
 from src.categorize.chatgpt import get_text_category
 
 logger = logging.getLogger(__name__)
@@ -85,8 +85,8 @@ def youtube_channel_statistics(channel_handle, channel_id):
     return get_channel_statistics(channel_handle, channel_id)
 
 
-def list_videos(channel_id):
-    pass
+def youtube_channel_details(channel_handle, channel_id, n):
+    return get_channel_details(channel_handle, channel_id, n)
 
 
 def test():

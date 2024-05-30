@@ -6,7 +6,7 @@ from werkzeug.middleware.proxy_fix import ProxyFix  # type: ignore
 from werkzeug.exceptions import BadRequest  # type: ignore
 
 from src.flows import (video_categorization, VIDEO_ID, TRANSCRIPT, youtube_channel_statistics, text_categorization,
-                       video_basic_information)
+                       video_basic_information, youtube_channel_details)
 from src.common.setup_logging import setup_logging
 
 
@@ -124,6 +124,17 @@ def channel_statistics():
 
     return jsonify(youtube_channel_statistics(channel_handle, channel_id))
 
+
+@app.route("/youtube/channel_details", methods=["GET"])
+def channel_details():
+    channel_handle = request.args.get('channel_handle')
+    channel_id = request.args.get('channel_id')
+    n = request.args.get('n', 5)
+
+    if (channel_handle is channel_id is None) or None not in {channel_id, channel_handle}:
+        raise BadRequest(f"{request.url}. Expected exactly one of 'channel_id' and 'channel_handle' to be specified.")
+
+    return jsonify(youtube_channel_details(channel_handle, channel_id, n))
 
 if __name__ == '__main__':
     app.run()

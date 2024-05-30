@@ -62,11 +62,11 @@ def get_channel_sections(channel_id):
     ).execute()
 
 
-def get_channel_details(channel_handle=None, channel_id=None, n=5):
+def get_channel_details(channel_handle=None, channel_id=None, n=None):
     statistics = get_channel_statistics(channel_handle, channel_id)[0]
     channel_id = statistics["id"]
     channel_handle = statistics["snippet"]["customUrl"]
-    videos = search_recent_n_videos(channel_id, channel_handle, n)
+
     result = {
         "channel": {
             "country": statistics["brandingSettings"]["channel"]["country"],
@@ -81,6 +81,8 @@ def get_channel_details(channel_handle=None, channel_id=None, n=5):
         "channel_handle": channel_handle,
         "videos": []
     }
+    
+    videos = search_recent_n_videos(channel_id, channel_handle, n)
     for video in videos["items"]:
         video_id = video["id"]["videoId"]
         kind = video["id"]["kind"]
@@ -109,7 +111,7 @@ def get_channel_statistics(channel_handle=None, channel_id=None):
     return request.execute()
 
 
-def search_recent_n_videos(channel_id, channel_handle, n=5):
+def search_recent_n_videos(channel_id, channel_handle, n):
     request = youtube.search().list(
         part="snippet",
         channelId=channel_id,
