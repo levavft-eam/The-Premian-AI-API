@@ -73,3 +73,11 @@ def get_text_category(user_message, system_message_index=0):
     return completion.choices[0].message.content
 
 
+def get_embedding(text):
+    client = OpenAI()
+    response = client.embeddings.create(
+        input=text,
+        model="text-embedding-ada-002"
+    )
+
+    return response.data[0].embedding
