@@ -5,6 +5,7 @@ import os
 import logging
 import json
 from pathlib import Path
+from scipy import spatial
 
 load_dotenv()
 CLIENT = OpenAI()
@@ -81,6 +82,8 @@ def load_category_embeddings():
 
 
 CATEGORY_EMBEDDINGS = load_category_embeddings()
+CATEGORY_EMBEDDINGS_LOOKUP = tuple((category, embedding) for category, embedding in CATEGORY_EMBEDDINGS.items())
+CATEGORY_EMBEDDINGS_KDTREE = spatial.KDTree([pair[1] for pair in CATEGORY_EMBEDDINGS_LOOKUP])
 
 
 SYSTEM_MESSAGES = (
@@ -110,3 +113,8 @@ def get_text_category(user_message, system_message_index=0):
     return completion.choices[0].message.content
 
 
+def get_embedding_based_category(user_message):
+    message_embedding = get_embedding(user_message)
+    closest = CATEGORY_EMBEDDINGS_KDTREE.query(message_embedding)
+    logger.info(f"When calculating embeddings, got: {closest=}")
+    return CATEGORY_EMBEDDINGS_LOOKUP[closest[1]][0]
