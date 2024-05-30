@@ -7,7 +7,7 @@ from src.stt.whisper import load_pipeline
 from src.stt.open_ai import stt as open_ai_stt
 from src.download.dlp import download_video
 from src.metadata.google_api import get_video_statistics, get_channel_statistics, get_channel_details
-from src.categorize.chatgpt import get_text_category
+from src.categorize.chatgpt import get_text_category, CATEGORY_EMBEDDINGS
 
 logger = logging.getLogger(__name__)
 
@@ -75,6 +75,7 @@ def video_categorization(video_id, transcript=None, audio_file_path=None, use_op
 
 
 def text_categorization(text):
+    logger.info(CATEGORY_EMBEDDINGS)
     return {
         'GPT3.5FreeCategory': get_text_category(text, 0),
         'GPT3.5CategoryFromList': get_text_category(text, 2)
