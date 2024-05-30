@@ -69,7 +69,7 @@ def get_channel_details(channel_handle=None, channel_id=None, n=None):
 
     result = {
         "channel": {
-            "country": statistics["brandingSettings"]["channel"]["country"],
+            "country": statistics["brandingSettings"]["channel"].get("country", None),
             "description": statistics["brandingSettings"]["channel"]["description"],
             "title": statistics["brandingSettings"]["channel"]["title"],
         },
@@ -82,7 +82,7 @@ def get_channel_details(channel_handle=None, channel_id=None, n=None):
         "videos": []
     }
 
-    videos = search_recent_n_videos(channel_id, channel_handle, n)
+    videos = search_recent_n_videos(channel_id, n)
     for video in videos["items"]:
         video_id = video["id"]["videoId"]
         kind = video["id"]["kind"]
@@ -111,13 +111,13 @@ def get_channel_statistics(channel_handle=None, channel_id=None):
     return request.execute()
 
 
-def search_recent_n_videos(channel_id, channel_handle, n):
+def search_recent_n_videos(channel_id, n):
     request = youtube.search().list(
         part="snippet",
         channelId=channel_id,
         maxResults=n,
         order="date",
-        q=channel_handle,
+        # q="",  # its better to leave the query empty.
         type="video"
     )
 
