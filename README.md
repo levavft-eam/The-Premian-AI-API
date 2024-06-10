@@ -20,7 +20,7 @@ If you're installing this app on a new server:
     conda activate the-premium-ai-api
 10. Install pip for conda by running:
     conda install pip
-11. Install all the requirements for this app by running:
+11. Install all the requirements for this app by running: (If you're on windows, make sure to run as administrator)
     pip install -r requirements.txt
 12. Copy the '.env' file manually from a different installation, as it can't be commited to git (sensitive information). Make sure to put it directly inside The-Premian-AI-API.
     If you're in a production environment, make sure 'ENV=prod' is in .env and not 'ENV=dev'.
