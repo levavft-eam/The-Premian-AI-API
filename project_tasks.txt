@@ -1,10 +1,4 @@
 TODO:
 1. make a caching system
-3. give estimated running time api
-5. create a categorization based on keyword distances
-7. improve chatgpt request messages......
-9. try and figure out if logging is working properly or not in the prod environment...
 10. create general paging in google_api
-11. support categorization of LONG text with post requests... (10/5)  (***)
 12. experiment with alternatives to openai chatgpt that I have at home.
-13. try to see if I can return channel handle in the channel statistics API  (***)
