@@ -1,4 +1,0 @@
-TODO:
-1. make a caching system
-10. create general paging in google_api
-12. experiment with alternatives to openai chatgpt that I have at home.
