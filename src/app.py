@@ -25,6 +25,23 @@ app.wsgi_app = ProxyFix(
 )
 
 
+def parse_bool(var, default=False):
+    if isinstance(var, bool):
+        return var
+    if isinstance(var, str):
+        if var.lower().startswith('t'):
+            return True
+        if var.lower().startswith('f'):
+            return False
+        try:
+            var = int(var)
+        except:
+            raise Exception(f"Couldn't parse {var=} as bool")
+    if isinstance(var, int):
+        return var > 0
+    return default
+   
+
 @app.before_request
 def gather_request_data():
     g.method = request.method
@@ -73,16 +90,13 @@ def fail():
 @app.route('/video/categorize', methods=['GET'])
 def categorize():
     url_format = "/video/categorize?v_id=<video id>"
+    truncate = parse_bool(request.args.get("truncate", False))
+    use_openapi_transcription = parse_bool(request.args.get('use_openai', default=False))
     video_id = request.args.get('v_id')
     if video_id is None:
         raise BadRequest(f"{request.url}. Expected url format: {url_format}")
 
-    use_openapi_transcription = request.args.get('use_openai', default=False)
-    if ((isinstance(use_openapi_transcription, str) and use_openapi_transcription.lower().startswith('t')) or
-            (isinstance(use_openapi_transcription, int) and use_openapi_transcription > 0)):
-        use_openapi_transcription = True
-
-    return jsonify(video_categorization(video_id, use_openai=use_openapi_transcription))
+    return jsonify(video_categorization(video_id, use_openai=use_openapi_transcription, truncate=truncate))
 
 
 @app.route('/video/basic_information', methods=['GET'])

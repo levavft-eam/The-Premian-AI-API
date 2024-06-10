@@ -46,7 +46,7 @@ def video_basic_information(video_id):
     return result
 
 
-def video_categorization(video_id, transcript=None, audio_file_path=None, use_openai=False):
+def video_categorization(video_id, transcript=None, audio_file_path=None, use_openai=False, truncate=False):
     logger.info(f'Categorizing video with {video_id=}, {transcript=}, {audio_file_path=}')
     result = get_video_statistics(video_id)
 
@@ -67,7 +67,7 @@ def video_categorization(video_id, transcript=None, audio_file_path=None, use_op
                                          result['description'],
                                          result['transcript']])  # TODO: Improve this...
     
-    result['categories'] = text_categorization(result['AIReadyText'])
+    result['categories'] = text_categorization(result['AIReadyText'], truncate=truncate)
     result['categories']['youtubeCategory'] = result['category']
 
     logger.info('Done categorizing.')
