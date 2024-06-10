@@ -12,6 +12,7 @@ yt-dlp[default]
 pandas
 scipy
 openai
+tiktoken
 flask
 gunicorn
 Werkzeug

@@ -106,13 +106,14 @@ def text_categorize():
 
     elif request.method == "POST":
         text = request.json.get("text")
+        truncate = request.json.get("truncate", False)
         if text is None:
             raise BadRequest(f"{request.url}. Expected a json body with a 'text' field. Recieved: {request.json}")
 
     if text is None:
             raise BadRequest(f"{request.url}.")
     
-    return jsonify(text_categorization(text))
+    return jsonify(text_categorization(text, truncate=truncate))
 
 
 @app.route('/youtube/channel_statistics', methods=['GET'])

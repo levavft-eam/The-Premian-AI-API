@@ -4,6 +4,7 @@ import os
 # import pandas as pd
 import logging
 import json
+import tiktoken
 from pathlib import Path
 from scipy import spatial
 
@@ -57,11 +58,39 @@ THIS_FOLDER = Path(__file__).parent.resolve()
 CATEGORY_EMBEDDINGS_FILE = THIS_FOLDER / '..' / '..' / 'data' / 'embeddings' / 'embeddings.json'
 
 
-def get_embedding(text):
+def num_tokens_from_string(string: str, encoding_name: str) -> int:
+    """Returns the number of tokens in a text string."""
+    encoding = tiktoken.get_encoding(encoding_name)
+    num_tokens = len(encoding.encode(string))
+    return num_tokens
+
+
+def truncate_text(text, tokenizer_name="cl100k_base", maximal_token_count=8192):
+    token_count = num_tokens_from_string(text, tokenizer_name)
+
+    maximal_tries = 10
+    while token_count >= maximal_token_count and maximal_tries > 0:
+        rate = token_count / maximal_token_count
+        goal_length = max(0, int(len(text) / rate) - 100)
+        logger.warn(f"{goal_length=}")
+        text = text[:goal_length]
+        token_count = num_tokens_from_string(text, tokenizer_name)
+        maximal_tries -= 1
+    return text
+
+
+def get_embedding(text, truncate=False):
+    model = "text-embedding-3-small"
+    tokenizer_name = "cl100k_base"
+    maximal_token_count = 8192
+
+    if truncate:
+        text = truncate_text(text, tokenizer_name, maximal_token_count)
+
     client = OpenAI()
     response = client.embeddings.create(
         input=text,
-        model="text-embedding-ada-002"
+        model=model
     )
 
     return response.data[0].embedding
@@ -113,8 +142,8 @@ def get_text_category(user_message, system_message_index=0):
     return completion.choices[0].message.content
 
 
-def get_embedding_based_category(user_message):
-    message_embedding = get_embedding(user_message)
+def get_embedding_based_category(user_message, truncate):
+    message_embedding = get_embedding(user_message, truncate)
     closest = CATEGORY_EMBEDDINGS_KDTREE.query(message_embedding)
     logger.info(f"When calculating embeddings, got: {closest=}")
     return CATEGORY_EMBEDDINGS_LOOKUP[closest[1]][0]

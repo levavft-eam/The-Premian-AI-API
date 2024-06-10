@@ -74,11 +74,11 @@ def video_categorization(video_id, transcript=None, audio_file_path=None, use_op
     return result
 
 
-def text_categorization(text):
+def text_categorization(text, truncate=False):
     return {
         'GPT3.5FreeCategory': get_text_category(text, 0),
         'GPT3.5CategoryFromList': get_text_category(text, 2),
-        'TextEmbeddingAda002EmbeddedListKDTreeSearch': get_embedding_based_category(text)
+        'TextEmbeddingAda002EmbeddedListKDTreeSearch': get_embedding_based_category(text, truncate)
     }
 
 
