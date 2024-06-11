@@ -13,6 +13,16 @@ CLIENT = OpenAI()
 
 logger = logging.getLogger(__name__)
 
+MODEL_ENCODER_MAP = {
+    "gpt-4": "cl100k_base",
+    "gpt-3.5-turbo": "cl100k_base",
+    "text-embedding-ada-002": "cl100k_base",
+    "text-embedding-3-small": "cl100k_base",
+    "text-embedding-3-large": "cl100k_base",
+    "text-davinci-002": "p50k_base",
+    "text-davinci-003": "p50k_base",
+}
+
 CATEGORIES = (
     ('엔터테인먼트·예술', 'Entertainment & Arts'),
     ('문학·책', 'Literature & Books'),
@@ -81,7 +91,7 @@ def truncate_text(text, tokenizer_name="cl100k_base", maximal_token_count=8192):
 
 def get_embedding(text, truncate=False):
     model = "text-embedding-3-small"
-    tokenizer_name = "cl100k_base"
+    tokenizer_name = MODEL_ENCODER_MAP[model]
     maximal_token_count = 8192
 
     if truncate:
@@ -127,10 +137,17 @@ SYSTEM_MESSAGES = (
 TEST_STRING = "'기초공사가 중요하듯 피부도 기초가 중요하니 꽃추출물이 함유되어  내 거친 피부를 푸석해진 피부를 촉촉하게 수분충전해줄  아미니의 세컨 브랜드 롤리오  페이셜 토너&에멀전 여름에도 수분 보충은 필수라지요  #롤리오 #보타니컬믹스 #촉촉한에멀전 #촉촉한스킨토너  #기초화장품 #기초스킨케어 #토너추천 #에멀전추천 #수분충전  #뷰티스타그램 #뷰티맘스타그램'"
 
 
-def get_text_category(user_message, system_message_index=0):
+def get_text_category(user_message, truncate, system_message_index=0):
+    model = "gpt-3.5-turbo"
+    tokenizer_name = MODEL_ENCODER_MAP[model]
+    maximal_token_count = 16385
+
+    if truncate:
+        user_message = truncate_text(user_message, tokenizer_name, maximal_token_count)
+
     system_message = SYSTEM_MESSAGES[system_message_index]
     completion = CLIENT.chat.completions.create(
-        model="gpt-3.5-turbo",
+        model=model,
         messages=[
             {"role": "system",
              "content": system_message},
