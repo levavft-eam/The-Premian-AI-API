@@ -1,4 +1,4 @@
-from yt_dlp import YoutubeDL  # type: ignore
+from yt_dlp import YoutubeDL, download_range_func  # type: ignore
 from pathlib import Path
 
 THIS_FOLDER = Path(__file__).parent.resolve()
@@ -16,16 +16,15 @@ def _yt_dlp_monitor(d):
 def download_video(video_id, archive=True):
     video_url = f"https://www.youtube.com/watch?v={video_id}"
 
+    start, end = 0, 60*20  # Start and end time in seconds.
     ydl_opts = {
         'format': 'bestaudio',
         'outtmpl': f'{DATA_DIR}/%(id)s.%(ext)s',
         'progress_hooks': [_yt_dlp_monitor],
+        'download_ranges': download_range_func(None, [(start, end)]), 
+        'force_keyframes_at_cuts': True,
         # 'quiet': True,
         # 'no_warnings': True, 
-        # 'postprocessors': [{
-        #     'key': 'ExecAfterDownload',  # Execute a command after download
-        #     'exec_cmd': 'ffmpeg -i {} -ss 00:00:00 -t 30 -c copy {}_trimmed.mp4',  # Trim the first 30 seconds
-        # }],
     }
     if archive:
         ydl_opts['download_archive'] = 'download_archive.txt'
