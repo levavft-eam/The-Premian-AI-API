@@ -76,9 +76,8 @@ def video_categorization(video_id, transcript=None, audio_file_path=None, use_op
 
 def text_categorization(text, truncate=False):
     return {
-        'GPT3.5FreeCategory': get_text_category(text, truncate, 0),
-        'GPT3.5CategoryFromList': get_text_category(text, truncate, 2),
-        'TextEmbeddingAda002EmbeddedListKDTreeSearch': get_embedding_based_category(text, truncate)
+        'FreeCategory': get_text_category(text, truncate, 0),
+        'PremianCategory': get_embedding_based_category(text, truncate)
     }
 
 
