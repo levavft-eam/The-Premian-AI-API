@@ -69,6 +69,7 @@ def youtube_video_categorization(video_id, transcript=None, audio_file_path=None
     logger.info('Done categorizing.')
     return result
 
+
 def video_transcription(video_url, file_name, audio_file_path, use_openai):
     logger.info(f'Transcribing video with {video_url=}, {audio_file_path=}')
 
