@@ -82,7 +82,6 @@ def instagram_video_categorization(video_url, audio_file_path=None, use_openai=F
                                          result['transcript']])  # TODO: Improve this...
     
     result['categories'] = text_categorization(result['AIReadyText'], truncate=truncate)
-    result['categories']['youtubeCategory'] = result['category']
 
     logger.info('Done categorizing.')
     return result
