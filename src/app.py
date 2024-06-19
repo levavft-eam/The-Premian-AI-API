@@ -155,14 +155,14 @@ def channel_details():
 
 @app.route("/instagram/video/categorize", methods=['GET'])
 def instagram_video_categorize():
-    url_format = "/instagram/video/categorize?v_url=<video url>"
+    url_format = "/instagram/video/categorize?post_id=<video url>"
     truncate = parse_bool(request.args.get("truncate", False))
     use_openapi_transcription = parse_bool(request.args.get('use_openai', default=False))
-    video_url = request.args.get('v_url')
-    if video_url is None:
+    post_id = request.args.get('post_id')
+    if post_id is None:
         raise BadRequest(f"{request.url}. Expected url format: {url_format}")
 
-    return jsonify(instagram_video_categorization(video_url, use_openai=use_openapi_transcription, truncate=truncate))
+    return jsonify(instagram_video_categorization(post_id, use_openai=use_openapi_transcription, truncate=truncate))
 
 
 if __name__ == '__main__':

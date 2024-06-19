@@ -70,11 +70,12 @@ def youtube_video_categorization(video_id, transcript=None, audio_file_path=None
     return result
 
 
-def instagram_video_categorization(video_url, audio_file_path=None, use_openai=False, truncate=False):
-    logger.info(f'Categorizing video with {video_url=}, {audio_file_path=}')
+def instagram_video_categorization(post_id, audio_file_path=None, use_openai=False, truncate=False):
+    logger.info(f'Categorizing video with {post_id=}, {audio_file_path=}')
     result = {}
 
-    file_name = "insta_temp_example"
+    video_url = f'https://www.instagram.com/p/{post_id}/'
+    file_name = post_id
 
     result['transcript'] = video_transcription(video_url, file_name, audio_file_path, use_openai)
 
