@@ -5,7 +5,7 @@ from flask_cors import CORS # type: ignore
 from werkzeug.middleware.proxy_fix import ProxyFix  # type: ignore
 from werkzeug.exceptions import BadRequest  # type: ignore
 
-from src.flows import (video_categorization, VIDEO_ID, TRANSCRIPT, youtube_channel_statistics, text_categorization,
+from src.flows import (youtube_video_categorization, VIDEO_ID, TRANSCRIPT, youtube_channel_statistics, text_categorization,
                        video_basic_information, youtube_channel_details)
 from src.common.setup_logging import setup_logging
 
@@ -79,7 +79,7 @@ def handle_generic_exception(e):
 
 @app.route('/test/partial_video_categorization', methods=['GET'])
 def run_test():
-    return jsonify(video_categorization(VIDEO_ID, transcript=TRANSCRIPT))
+    return jsonify(youtube_video_categorization(VIDEO_ID, transcript=TRANSCRIPT))
 
 
 @app.route('/test/crash', methods=['GET'])
@@ -96,7 +96,7 @@ def categorize():
     if video_id is None:
         raise BadRequest(f"{request.url}. Expected url format: {url_format}")
 
-    return jsonify(video_categorization(video_id, use_openai=use_openapi_transcription, truncate=truncate))
+    return jsonify(youtube_video_categorization(video_id, use_openai=use_openapi_transcription, truncate=truncate))
 
 
 @app.route('/video/basic_information', methods=['GET'])

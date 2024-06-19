@@ -46,19 +46,15 @@ def video_basic_information(video_id):
     return result
 
 
-def video_categorization(video_id, transcript=None, audio_file_path=None, use_openai=False, truncate=False):
+def youtube_video_categorization(video_id, transcript=None, audio_file_path=None, use_openai=False, truncate=False):
     logger.info(f'Categorizing video with {video_id=}, {transcript=}, {audio_file_path=}')
     result = get_video_statistics(video_id)
 
-    if transcript is None:
-        if audio_file_path is None:
-            audio_file_path = download_video(video_id, False)
+    video_url = f"https://www.youtube.com/watch?v={video_id}"
+    file_name = video_id
 
-        if use_openai:
-            result['transcript'] = open_ai_stt(audio_file_path)
-        else:
-            pipeline = load_pipeline()
-            result['transcript'] = pipeline(audio_file_path, generate_kwargs={"language": "korean"})["text"]
+    if transcript is None:
+        result['transcript'] = video_transcription(video_url, file_name, audio_file_path, use_openai)
     else:
         result['transcript'] = TRANSCRIPT
 
@@ -73,6 +69,22 @@ def video_categorization(video_id, transcript=None, audio_file_path=None, use_op
     logger.info('Done categorizing.')
     return result
 
+def video_transcription(video_url, file_name, audio_file_path, use_openai):
+    logger.info(f'Transcribing video with {video_url=}, {audio_file_path=}')
+
+    
+    if audio_file_path is None:
+        audio_file_path = download_video(video_url, file_name, False)
+
+    if use_openai:
+        transcript = open_ai_stt(audio_file_path)
+    else:
+        pipeline = load_pipeline()
+        transcript = pipeline(audio_file_path, generate_kwargs={"language": "korean"})["text"]
+    
+    logger.info('Done transcribing')
+    return transcript
+    
 
 def text_categorization(text, truncate=False):
     return {
@@ -90,17 +102,17 @@ def youtube_channel_details(channel_handle, channel_id, n):
 
 
 def test():
-    result = video_categorization(VIDEO_ID, transcript=TRANSCRIPT)
+    result = youtube_video_categorization(VIDEO_ID, transcript=TRANSCRIPT)
     logger.info(json.dumps(result, ensure_ascii=False))  # https://jsonviewer.stack.hu/
 
 
 def test2():
-    result = video_categorization("mgLeCd5zQ5E")
+    result = youtube_video_categorization("mgLeCd5zQ5E")
     logger.info(json.dumps(result, ensure_ascii=False))  # https://jsonviewer.stack.hu/
 
 
 def test3():
-    result = video_categorization("mgLeCd5zQ5E", use_openai=True)
+    result = youtube_video_categorization("mgLeCd5zQ5E", use_openai=True)
     logger.info(json.dumps(result, ensure_ascii=False))  # https://jsonviewer.stack.hu/
 
 
