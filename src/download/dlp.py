@@ -12,10 +12,7 @@ def _yt_dlp_monitor(d):
     global final_filename
     final_filename = d.get('info_dict').get('_filename')
 
-
-def download_video(video_id, archive=True):
-    video_url = f"https://www.youtube.com/watch?v={video_id}"
-
+def _download_video(video_url, file_name, archive):
     start, end = 0, 60*20  # Start and end time in seconds.
     ydl_opts = {
         'format': 'bestaudio',
@@ -34,9 +31,14 @@ def download_video(video_id, archive=True):
 
     global final_filename
     if final_filename in {None, ""}:
-        # TODO: search the data directory for files starting with {video_id} instead.
-        final_filename = f"{video_id}.webm"
+        # TODO: search the data directory for files starting with {file_name} instead.
+        final_filename = f"{file_name}.webm"
     return final_filename
+
+def download_video(video_id, archive=True):
+    video_url = f"https://www.youtube.com/watch?v={video_id}"
+    file_name = video_id
+    return _download_video(video_url, file_name, archive)
 
 
 def list_formats(video_id):
