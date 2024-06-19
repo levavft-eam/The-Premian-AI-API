@@ -6,7 +6,7 @@ from werkzeug.middleware.proxy_fix import ProxyFix  # type: ignore
 from werkzeug.exceptions import BadRequest  # type: ignore
 
 from src.flows import (youtube_video_categorization, VIDEO_ID, TRANSCRIPT, youtube_channel_statistics, text_categorization,
-                       video_basic_information, youtube_channel_details)
+                       video_basic_information, youtube_channel_details, instagram_video_categorization)
 from src.common.setup_logging import setup_logging
 
 
@@ -151,6 +151,19 @@ def channel_details():
         raise BadRequest(f"{request.url}. Expected exactly one of 'channel_id' and 'channel_handle' to be specified.")
 
     return jsonify(youtube_channel_details(channel_handle, channel_id, n))
+
+
+@app.route("/instagram/video/categorize", methods=['GET'])
+def instagram_video_categorize():
+    url_format = "/instagram/video/categorize?v_url=<video url>"
+    truncate = parse_bool(request.args.get("truncate", False))
+    use_openapi_transcription = parse_bool(request.args.get('use_openai', default=False))
+    video_url = request.args.get('v_url')
+    if video_url is None:
+        raise BadRequest(f"{request.url}. Expected url format: {url_format}")
+
+    return jsonify(instagram_video_categorization(video_url, use_openai=use_openapi_transcription, truncate=truncate))
+
 
 if __name__ == '__main__':
     app.run()

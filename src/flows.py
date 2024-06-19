@@ -56,11 +56,29 @@ def youtube_video_categorization(video_id, transcript=None, audio_file_path=None
     if transcript is None:
         result['transcript'] = video_transcription(video_url, file_name, audio_file_path, use_openai)
     else:
-        result['transcript'] = TRANSCRIPT
+        result['transcript'] = transcript
 
     result['AIReadyText'] = '\n\n'.join([result['channelTitle'],
                                          result['title'],
                                          result['description'],
+                                         result['transcript']])  # TODO: Improve this...
+    
+    result['categories'] = text_categorization(result['AIReadyText'], truncate=truncate)
+    result['categories']['youtubeCategory'] = result['category']
+
+    logger.info('Done categorizing.')
+    return result
+
+
+def instagram_video_categorization(video_url, audio_file_path=None, use_openai=False, truncate=False):
+    logger.info(f'Categorizing video with {video_url=}, {audio_file_path=}')
+    result = {}
+
+    file_name = "insta_temp_example"
+
+    result['transcript'] = video_transcription(video_url, file_name, audio_file_path, use_openai)
+
+    result['AIReadyText'] = '\n\n'.join([
                                          result['transcript']])  # TODO: Improve this...
     
     result['categories'] = text_categorization(result['AIReadyText'], truncate=truncate)
