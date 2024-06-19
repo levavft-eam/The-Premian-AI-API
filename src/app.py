@@ -115,6 +115,7 @@ def text_categorize():
     if request.method == "GET":
         url_format = "/text/categorize?text=<text>"
         text = request.args.get('text')
+        truncate=request.args.get('truncate', False)
         if text is None:
             raise BadRequest(f"{request.url}. Expected url format: {url_format}")
 
